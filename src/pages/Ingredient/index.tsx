@@ -1,7 +1,10 @@
-import React, { useEffect } from 'react';
-import { MealCard } from '../../components/MealCard';
+import React, { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
+
+import { MealCard } from '../../components/MealCard';
 import { usePartyContext } from '../../context';
+import { Layout } from '../../layout';
+
 import './ingredient.scss';
 
 export const Ingredient = () => {
@@ -19,29 +22,31 @@ export const Ingredient = () => {
   }, [slug]);
 
   return (
-    <div className="ingredients-container">
-      <div>
-        <span className="font-mulish" onClick={() => navigate('/')}>
-          Back
-        </span>
+    <Layout>
+      <div className="ingredients-container">
         <div>
-          <div className="image-container">
-            <img src={`https://www.themealdb.com/images/ingredients/${slug?.name}.png`} alt={slug?.name} />
-          </div>
-          <div className="meals-group">
-            {mealsByName.map((item: any) => {
-              return (
-                <MealCard
-                  key={item.idMeal}
-                  image={item.strMealThumb}
-                  title={item.strMeal}
-                  onClick={() => navigate(`/meals/${item.idMeal}`)}
-                />
-              );
-            })}
+          <span className="font-mulish" onClick={() => navigate('/')}>
+            Back
+          </span>
+          <div>
+            <div className="image-container">
+              <img src={`https://www.themealdb.com/images/ingredients/${slug?.name}.png`} alt={slug?.name} />
+            </div>
+            <div className="meals-group">
+              {mealsByName.map((item: any) => {
+                return (
+                  <MealCard
+                    key={item.idMeal}
+                    image={item.strMealThumb}
+                    title={item.strMeal}
+                    onClick={() => navigate(`/meals/${item.idMeal}`)}
+                  />
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };

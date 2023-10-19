@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import { Spinner } from '../../components/Spinner';
 import { usePartyContext } from '../../context';
 import { MealCard } from '../../components/MealCard';
+import { Layout } from '../../layout';
+
 import './filter.scss';
 
 const filterOptionList: filterOptionListObject[] = [
@@ -73,105 +76,108 @@ export const Filter = () => {
   }, [searchText]);
 
   return (
-    <div className="filter-container">
-      <div>
-        <div className="filter-group">
-          <h3>Filter Results</h3>
-          <div className="filter-controller">
-            <div>
-              <label>Name (contains)</label>
-              <input
-                type="text"
-                value={searchText}
-                placeholder="Text string"
-                onChange={(e: any) => setSearchText(e.target.value)}
-              />
-            </div>
-            <div>
-              <div className="filter-option-selection">
-                {filterOptionList.map((item: filterOptionListObject) => {
-                  return (
-                    <div key={item.value}>
-                      <input
-                        type="radio"
-                        name="filter"
-                        className="bg-dark"
-                        value={item.value}
-                        checked={filterOption === item.value}
-                        onChange={(e: any) => setFilterOption(e.target.value)}
-                      />
-                      <label>{item.label}</label>
-                    </div>
-                  );
-                })}
-              </div>
-              <select onChange={(e: any) => setFilterText(e.target.value)}>
-                <option value="">
-                  Select {filterOption === 'areas' ? 'Area' : filterOption === 'categories' ? 'Category' : 'Ingredient'}
-                </option>
-                {filterOption === 'areas' ? (
-                  <>
-                    {allArea &&
-                      allArea.map((item: any) => {
-                        return (
-                          <option key={item.strArea} value={item.strArea}>
-                            {item.strArea}
-                          </option>
-                        );
-                      })}
-                  </>
-                ) : filterOption === 'categories' ? (
-                  <>
-                    {allCategories &&
-                      allCategories.map((item: any) => {
-                        return (
-                          <option key={item.strCategory} value={item.strCategory}>
-                            {item.strCategory}
-                          </option>
-                        );
-                      })}
-                  </>
-                ) : (
-                  <>
-                    {allIngredients &&
-                      allIngredients.map((item: any) => {
-                        return (
-                          <option key={item.strIngredient} value={item.strIngredient}>
-                            {item.strIngredient}
-                          </option>
-                        );
-                      })}
-                  </>
-                )}
-              </select>
-            </div>
-          </div>
-          <button onClick={filterClear}>Clear</button>
-        </div>
-
-        {isLoading ? (
-          <Spinner />
-        ) : (
-          <div className="filter-result-container">
-            {filterList?.length > 0 ? (
+    <Layout>
+      <div className="filter-container">
+        <div>
+          <div className="filter-group">
+            <h3>Filter Results</h3>
+            <div className="filter-controller">
               <div>
-                {filterList?.map((item: any) => {
-                  return (
-                    <MealCard
-                      key={item.idMeal}
-                      image={item.strMealThumb}
-                      title={item.strMeal}
-                      onClick={() => navigate(`/meals/${item.idMeal}`)}
-                    />
-                  );
-                })}
+                <label>Name (contains)</label>
+                <input
+                  type="text"
+                  value={searchText}
+                  placeholder="Text string"
+                  onChange={(e: any) => setSearchText(e.target.value)}
+                />
               </div>
-            ) : (
-              <span>No search result.</span>
-            )}
+              <div>
+                <div className="filter-option-selection">
+                  {filterOptionList.map((item: filterOptionListObject) => {
+                    return (
+                      <div key={item.value}>
+                        <input
+                          type="radio"
+                          name="filter"
+                          className="bg-dark"
+                          value={item.value}
+                          checked={filterOption === item.value}
+                          onChange={(e: any) => setFilterOption(e.target.value)}
+                        />
+                        <label>{item.label}</label>
+                      </div>
+                    );
+                  })}
+                </div>
+                <select onChange={(e: any) => setFilterText(e.target.value)}>
+                  <option value="">
+                    Select{' '}
+                    {filterOption === 'areas' ? 'Area' : filterOption === 'categories' ? 'Category' : 'Ingredient'}
+                  </option>
+                  {filterOption === 'areas' ? (
+                    <>
+                      {allArea &&
+                        allArea.map((item: any) => {
+                          return (
+                            <option key={item.strArea} value={item.strArea}>
+                              {item.strArea}
+                            </option>
+                          );
+                        })}
+                    </>
+                  ) : filterOption === 'categories' ? (
+                    <>
+                      {allCategories &&
+                        allCategories.map((item: any) => {
+                          return (
+                            <option key={item.strCategory} value={item.strCategory}>
+                              {item.strCategory}
+                            </option>
+                          );
+                        })}
+                    </>
+                  ) : (
+                    <>
+                      {allIngredients &&
+                        allIngredients.map((item: any) => {
+                          return (
+                            <option key={item.strIngredient} value={item.strIngredient}>
+                              {item.strIngredient}
+                            </option>
+                          );
+                        })}
+                    </>
+                  )}
+                </select>
+              </div>
+            </div>
+            <button onClick={filterClear}>Clear</button>
           </div>
-        )}
+
+          {isLoading ? (
+            <Spinner />
+          ) : (
+            <div className="filter-result-container">
+              {filterList?.length > 0 ? (
+                <div>
+                  {filterList?.map((item: any) => {
+                    return (
+                      <MealCard
+                        key={item.idMeal}
+                        image={item.strMealThumb}
+                        title={item.strMeal}
+                        onClick={() => navigate(`/meals/${item.idMeal}`)}
+                      />
+                    );
+                  })}
+                </div>
+              ) : (
+                <span>No search result.</span>
+              )}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 };
