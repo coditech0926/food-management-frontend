@@ -34,10 +34,15 @@ module.exports = {
       colors: {
         primary: '#c1d1e8',
         secondary: '#5692e8',
+        purple: '#7B4DD9',
         dark: '#182c47',
+        blue: '#2AB9F6',
         thick: '#0e1a2b',
         'black-start': '#081221',
         'black-end': '#03080f'
+      },
+      fontFamily: {
+        poppins: ['Poppins', 'sans-serif'],
       },
       container: {
         center: true
