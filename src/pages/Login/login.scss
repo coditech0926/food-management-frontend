@@ -1,0 +1,9 @@
+.logged-in {
+  @apply flex items-center gap-[5px] xsx:gap-[10px] pl-[10px];
+  > input {
+    @apply accent-blue w-[14px] xsx:w-[18px] h-[14px] xsx:h-[18px];
+  }
+  > label {
+    @apply text-white text-[12px] xsx:text-[14px] xl:text-[16px] font-[400] text-center;
+  }
+}
