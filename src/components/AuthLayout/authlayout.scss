@@ -1,0 +1,24 @@
+.auth-layout {
+  @apply bg-gradient-to-b from-black-start to-black-end min-h-100vh h-full w-full font-poppins;
+  .auth-container {
+    @apply flex justify-center items-center gap-[4%] h-full min-h-[100vh] p-[20px];
+    .auth-form {
+      @apply flex flex-col gap-[30px] xsx:gap-[40px] sm:gap-[60px] bg-blue/[0.1] 
+      px-[20px] sm:px-[30px] lg:px-[40px] xl:px-[50px] py-[50px] rounded-[20px] shadow-xl overflow-auto;
+      h2 {
+        @apply text-[36px] lg:text-[40px] xl:text-[44px] text-center sm:text-left text-white font-[700];
+      }
+      .form-control {
+        @apply flex flex-col gap-[20px];
+        .form-element {
+          @apply relative w-[260px] xsm:w-[280px] xsl:w-[300px] xsx:w-[360px] sm:w-[440px]
+          h-[50px] xsx:h-[54px];
+        }
+      }
+      .redirect-other {
+        @apply flex flex-col xsx:flex-row gap-[4px] xsx:gap-[6px] justify-center items-center
+        text-[14px] sm:text-[16px] text-white;
+      }
+    }
+  }
+}
