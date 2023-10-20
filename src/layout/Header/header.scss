@@ -1,5 +1,5 @@
 header {
-  @apply flex px-[2em] py-[4em];
+  @apply flex px-[2em] py-[4em] relative;
   ul {
     @apply container flex gap-[1.8em] text-[1.8em] uppercase font-[600] max-w-[1440px];
     li {
@@ -11,5 +11,8 @@ header {
         @apply absolute text-dark text-[1.2em] -left-[0.6em] -top-[0.6em];
       }
     }
+  }
+  p {
+    @apply absolute right-[20px] top-[20px] font-poppins text-primary font-[600] cursor-pointer hover:underline;
   }
 }
