@@ -1,7 +1,9 @@
 import { createContext, useContext, useReducer, useEffect, useMemo, Dispatch, ReactNode } from 'react';
 import axios from 'axios';
+import { config } from '../config/global.const';
 
 interface State {
+  token: string;
   isLoading: boolean;
   latestData: any[];
   randomData: any[];
@@ -19,7 +21,7 @@ interface ProviderProps {
   children: ReactNode;
 }
 
-type Action = { type: string; payload: any };
+type Action = { type: string; payload?: any };
 
 type PartyContextType = [State, Dispatch<Action>];
 
@@ -34,13 +36,26 @@ export function usePartyContext(): PartyContextType {
 }
 
 function reducer(state: State, { type, payload }: Action): State {
-  return {
-    ...state,
-    [type]: payload
-  };
+  switch (type) {
+    case 'SAVE_TOKEN':
+      const token = { token: payload.token };
+      localStorage.setItem(config.appKey, JSON.stringify(token));
+      return { ...state, token: payload.token };
+    case 'LOAD_TOKEN_FROM_STORAGE':
+      return { ...state, token: JSON.parse(localStorage.getItem(config.appKey) as any)?.token };
+    case 'LOG_OUT':
+      localStorage.removeItem(config.appKey);
+      return { ...state, token: '' };
+    default:
+      return {
+        ...state,
+        [type]: payload
+      };
+  }
 }
 
 const INIT_STATE: State = {
+  token: '',
   isLoading: false,
   latestData: [],
   randomData: [],
@@ -59,6 +74,7 @@ export default function Provider({ children }: ProviderProps): JSX.Element {
 
   useEffect(() => {
     (async () => {
+      dispatch({ type: 'LOAD_TOKEN_FROM_STORAGE' });
       dispatch({
         type: 'isLoading',
         payload: true
@@ -76,6 +92,7 @@ export default function Provider({ children }: ProviderProps): JSX.Element {
     })();
     // eslint-disable-next-line
   }, []);
+
   const getLatestData = async () => {
     const result = await axios.get(`https://themealdb.com/api/json/v2/1/latest.php`);
     dispatch({
@@ -83,6 +100,7 @@ export default function Provider({ children }: ProviderProps): JSX.Element {
       payload: result.data.meals
     });
   };
+
   const getRandomData = async () => {
     try {
       const result = await axios.get('https://themealdb.com/api/json/v2/1/randomselection.php');
@@ -94,6 +112,7 @@ export default function Provider({ children }: ProviderProps): JSX.Element {
       console.log(err);
     }
   };
+
   const getAllCategories = async () => {
     try {
       const result = await axios.get('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
@@ -105,6 +124,7 @@ export default function Provider({ children }: ProviderProps): JSX.Element {
       console.log(err);
     }
   };
+
   const getAllIngredients = async () => {
     try {
       const result = await axios.get('https://www.themealdb.com/api/json/v1/1/list.php?i=list');
@@ -116,6 +136,7 @@ export default function Provider({ children }: ProviderProps): JSX.Element {
       console.log(err);
     }
   };
+
   const getAllAreas = async () => {
     try {
       const result = await axios.get('https://www.themealdb.com/api/json/v1/1/list.php?a=list');
@@ -127,6 +148,7 @@ export default function Provider({ children }: ProviderProps): JSX.Element {
       console.log(err);
     }
   };
+
   const getMealCategories = async () => {
     try {
       const result = await axios.get('https://www.themealdb.com/api/json/v1/1/categories.php');
@@ -138,6 +160,7 @@ export default function Provider({ children }: ProviderProps): JSX.Element {
       console.log(err);
     }
   };
+
   const getFilterData = async (option: string, text: string) => {
     try {
       const result = await axios.get(
@@ -153,6 +176,7 @@ export default function Provider({ children }: ProviderProps): JSX.Element {
       console.log(err);
     }
   };
+
   const getIngredientById = async (id: string) => {
     try {
       const result = await axios.get(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
@@ -164,6 +188,7 @@ export default function Provider({ children }: ProviderProps): JSX.Element {
       console.log(err);
     }
   };
+
   const getMealsByName = async (name: string) => {
     try {
       const result = await axios.get(`https://www.themealdb.com/api/json/v2/1/filter.php?i=${name}`);
@@ -175,6 +200,7 @@ export default function Provider({ children }: ProviderProps): JSX.Element {
       console.log(err);
     }
   };
+
   const getSearchData = async (name: string) => {
     try {
       const result = await axios.get(`https://www.themealdb.com/api/json/v1/1/search.php?s=${name}`);
@@ -186,6 +212,7 @@ export default function Provider({ children }: ProviderProps): JSX.Element {
       console.log(err);
     }
   };
+
   const generateDetailData = (data: any) => {
     const {
       strArea,
